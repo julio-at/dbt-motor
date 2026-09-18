@@ -18,7 +18,7 @@ jobs:
       - name: Install ruff
         run: pip install ruff
       - name: Lint with ruff
-        run: ruff check generator/ app/ --select E,W,F
+        run: ruff check generator/ app/*.py --select E,W,F
 
   test:
     name: Test
@@ -30,9 +30,9 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: |
-          pip install pytest numpy scipy duckdb dbt-core dbt-duckdb
+          pip install pytest numpy scipy duckdb pandas
       - name: Run pytest
-        run: pytest generator/tests/ -v
+        run: pytest generator/tests/ ingest/tests/ -v
 
   docker-build:
     name: Build Docker
@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Build Streamlit image
-        run: docker-compose build streamlit
+      - name: Build Motor Health Lab image
+        run: docker build -t motor-health-lab -f Dockerfile .
         env:
           DOCKER_BUILDKIT: 1
