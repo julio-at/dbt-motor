@@ -11,10 +11,9 @@ Coverage:
 """
 
 import pytest
-import math
 import numpy as np
 from generator.physics import (
-    d_pp_to_v_rms, v_rms_to_d_pp, v_rms_to_a_rms, running_speed,
+    d_pp_to_v_rms, v_rms_to_d_pp, running_speed,
     synchronous_check, bearing_defect_frequencies, dew_point,
 )
 from generator.physics import MotorSpecs
@@ -155,7 +154,7 @@ class TestSpectra:
     def test_generate_spectrum(self):
         """Generate a spectrum snapshot."""
         from generator.spectra import generate_spectrum
-        from generator.signal import MotorSignal, AxisSignal, SignalComponent
+        from generator.signal import MotorSignal, SignalComponent
         from datetime import datetime
 
         sig = MotorSignal()
@@ -183,7 +182,6 @@ class TestProfiles:
         from generator.main import generate
         from pathlib import Path
         import tempfile
-        import os
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_dir = Path(tmpdir)

@@ -5,16 +5,14 @@ Simulates a plant over time with scenarios, varying operating conditions, and da
 """
 
 import numpy as np
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import List, Tuple
-from generator.assets import Asset, create_plant_a
+from datetime import datetime
+from typing import List
+from generator.assets import Asset
 from generator.physics import running_speed, bearing_defect_frequencies
 from generator.signal import (
     baseline_signal, fault_unbalance_growth, fault_bearing_outer_race,
     fault_misalignment, fault_lubrication_loss,
 )
-from generator.output import FramesWriter, DriveTelemWriter, SpectraWriter, TruthLabelsWriter
 from generator.spectra import generate_spectrum
 
 

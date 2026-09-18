@@ -8,9 +8,7 @@ import gzip
 import csv
 import json
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import List, Dict, Any
-from collections import defaultdict
+from typing import Dict, Any
 
 
 class FramesWriter:

@@ -71,7 +71,7 @@ def generate(profile: str, seed: int, output_dir: Path):
     spectra_out = SpectraWriter(output_dir)
     truth_out = TruthLabelsWriter(output_dir)
 
-    print(f"[gen] Generating frames, drive telemetry, and spectra...")
+    print("[gen] Generating frames, drive telemetry, and spectra...")
     start_dt = datetime(2026, 1, 1, 0, 0, 0)
     end_dt = start_dt + timedelta(days=duration_days)
     current_dt = start_dt
@@ -138,7 +138,7 @@ def generate(profile: str, seed: int, output_dir: Path):
     print(f"[gen] ✓ Truth labels: {label_id - 1}")
 
     print(f"[gen] Output: {output_dir}")
-    print(f"[gen] Done.")
+    print("[gen] Done.")
 
 
 def main():

@@ -7,7 +7,7 @@ Faults: add bearing tones, harmonics, temperature effects.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 import math
 import numpy as np
 from generator.physics import MotorSpecs, v_rms_to_d_pp, running_speed

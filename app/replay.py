@@ -10,11 +10,12 @@ Usage:
 
 import argparse
 import time
-from datetime import datetime, timedelta, UTC
+from datetime import datetime
 from pathlib import Path
+import gzip
+import json
 import duckdb
 import pandas as pd
-from tqdm import tqdm
 import sys
 
 def load_replay_data(data_dir: Path) -> dict:
@@ -22,14 +23,20 @@ def load_replay_data(data_dir: Path) -> dict:
     frames, drive, spectra, truth = [], [], [], []
 
     # Try both structures: dt=*/hh=* (flat) and frames/dt=*/hh=* (nested)
-    dt_pattern = list(data_dir.glob("dt=*/hh=*")) or list(data_dir.glob("frames/dt=*/hh=*"))
+    dt_pattern = (
+        list(data_dir.glob("dt=*/hh=*")) or
+        list(data_dir.glob("frames/dt=*/hh=*"))
+    )
 
     # Sort by partition (dt/hh)
     for dt_hh in sorted(dt_pattern):
         try:
-            dt_str = [p for p in dt_hh.parts if p.startswith("dt=")][0].split("=")[1]
-            hh_str = [p for p in dt_hh.parts if p.startswith("hh=")][0].split("=")[1]
-            timestamp = datetime.fromisoformat(f"{dt_str}T{hh_str}:00:00+00:00")
+            dt_str = (
+                [p for p in dt_hh.parts if p.startswith("dt=")][0].split("=")[1]
+            )
+            hh_str = (
+                [p for p in dt_hh.parts if p.startswith("hh=")][0].split("=")[1]
+            )
 
             # Load CSVs
             for f in dt_hh.glob("part-*.csv.gz"):
@@ -37,16 +44,18 @@ def load_replay_data(data_dir: Path) -> dict:
             for f in dt_hh.glob("drive_*.csv.gz"):
                 drive.append(pd.read_csv(f, compression="gzip"))
             for f in dt_hh.glob("spectra_*.ndjson.gz"):
-                import gzip, json
                 with gzip.open(f, "rt") as fh:
                     lines = [json.loads(line) for line in fh if line.strip()]
                     if lines:
                         spectra.append(pd.DataFrame(lines))
-        except:
+        except Exception:  # noqa: E722
             pass
 
     # Truth labels
-    truth_paths = list(data_dir.glob("truth/labels.csv.gz")) + list(data_dir.glob("truth_labels.ndjson.gz"))
+    truth_paths = (
+        list(data_dir.glob("truth/labels.csv.gz")) +
+        list(data_dir.glob("truth_labels.ndjson.gz"))
+    )
     for truth_path in truth_paths:
         if truth_path.exists():
             try:
@@ -55,12 +64,13 @@ def load_replay_data(data_dir: Path) -> dict:
                     if not df.empty:
                         truth.append(df)
                 else:
-                    import gzip, json
                     with gzip.open(truth_path, "rt") as fh:
-                        lines = [json.loads(line) for line in fh if line.strip()]
+                        lines = [
+                            json.loads(line) for line in fh if line.strip()
+                        ]
                         if lines:
                             truth.append(pd.DataFrame(lines))
-            except:
+            except Exception:  # noqa: E722
                 pass
 
     return {
@@ -70,7 +80,13 @@ def load_replay_data(data_dir: Path) -> dict:
         "truth": pd.concat(truth, ignore_index=True) if truth else pd.DataFrame(),
     }
 
-def inject_batch(db: duckdb.DuckDBPyConnection, table: str, df: pd.DataFrame, start_time: datetime, compression: float = 1.0):
+def inject_batch(
+    db: duckdb.DuckDBPyConnection,
+    table: str,
+    df: pd.DataFrame,
+    start_time: datetime,
+    compression: float = 1.0,
+):
     """
     Inject data with time adjustment and compression.
 
@@ -106,9 +122,15 @@ def inject_batch(db: duckdb.DuckDBPyConnection, table: str, df: pd.DataFrame, st
     db.from_df(df_copy).insert_into(f"raw.{table}")
     print(f"✓ Inserted {len(df_copy)} rows into raw.{table}")
 
-def inject_in_batches(db: duckdb.DuckDBPyConnection, table: str, df: pd.DataFrame,
-                      start_time: datetime, compression: float = 1.0, pause_sec: float = 3.0,
-                      batch_size: int = None):
+def inject_in_batches(
+    db: duckdb.DuckDBPyConnection,
+    table: str,
+    df: pd.DataFrame,
+    start_time: datetime,
+    compression: float = 1.0,
+    pause_sec: float = 3.0,
+    batch_size: int = None,
+):
     """
     Inject data in batches with pauses so dashboard can show live updates.
 
@@ -221,8 +243,8 @@ def main():
         inject_batch(db, "truth_labels", data["truth"], start_time, compression=1.0)
 
     print("\n✓ Replay complete! Dashboard is now live with data.")
-    print(f"  → Open in browser: streamlit run app/streamlit_app.py")
-    print(f"  → Data updates every 5 seconds as batches inject")
+    print("  → Open in browser: streamlit run app/streamlit_app.py")
+    print("  → Data updates every 5 seconds as batches inject")
 
 if __name__ == "__main__":
     main()
