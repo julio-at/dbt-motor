@@ -39,36 +39,29 @@ Replay Engine (time-stepped data injection for demos)
 
 - **Docker Desktop** (running)
 - **macOS** / Linux / Windows with WSL2
-- **Git**
-- **~30 min** for first run (builds image, generates 21 days of synthetic data)
+- **~20 min** for first run (generates 21 days of synthetic data on first startup)
 
-### One-Command Setup
+### Setup & Run
 
 ```bash
-# Terminal 1: Build image & generate data (takes ~15-20 min)
-docker build -t motor-health-lab /Users/user/dbt -f /Users/user/dbt/Dockerfile
+# Build image and start dashboard
+docker-compose up
 
-# Terminal 2: Start dashboard (after Terminal 1 completes)
-docker run -d --name motor-health-app -p 8501:8501 \
-  -v motor-health-data:/workspace/data \
-  -v motor-health-db:/workspace \
-  -e STREAMLIT_SERVER_HEADLESS=true \
-  motor-health-lab bash -c "streamlit run app/streamlit_app.py"
-
-# Open browser
-open http://localhost:8501
+# Opens automatically at http://localhost:8501
 ```
 
-### Live Demo (Optional — Terminal 3)
+**First run:** Container generates synthetic data, initializes DuckDB, builds dbt models (~15-20 min). Subsequent runs start instantly.
 
-Watch data move live every 5 seconds:
+### Live Demo (Optional)
+
+In another terminal, inject data in batches:
 
 ```bash
 docker exec motor-health-app pip install -q tqdm
 docker exec motor-health-app python3 app/replay.py --data-dir data/dev --speed 10x --pause 3
 ```
 
-**Note:** Dashboard auto-refresh currently shows static data. Replay injects data correctly, but live 5-second updates are not yet implemented.
+Watch metrics update as data flows in.
 
 ---
 

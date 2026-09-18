@@ -5,62 +5,18 @@ volumes:
     driver: local
 
 services:
-  # ============= INIT PROFILE (all-in-one pipeline with persistent volumes) =============
-
-  pipeline:
-    image: motor-health-lab
-    build:
-      context: /Users/user/dbt
-      dockerfile: Dockerfile
-    container_name: motor-health-pipeline
-    working_dir: /workspace
-    volumes:
-      - motor-health-data:/workspace/data
-      - motor-health-db:/workspace
-    mem_limit: 4g
-    command: >
-      bash -c "
-        set -e
-        if [ ! -d data/dev/frames/dt=* ] 2>/dev/null; then
-          echo '[gen] Generating data...' && python3 -m generator.main --profile dev 2>&1 | grep '^\\[gen\\]' || true
-        fi
-
-        if [ ! -f .duckdb ]; then
-          echo '[setup] Creating DuckDB...' && python3 ingest/setup.py 2>&1 | grep '^\\[setup\\].*✓' || true
-        fi
-
-        if [ -d data/dev ]; then
-          echo '[load] Loading into DuckDB...' && python3 ingest/load.py 2>&1 | grep '✓ Total' || true
-        fi
-
-        echo '[dbt] Building models...' && dbt run 2>&1 | tail -1 || true
-
-        echo '✅ READY. Run: docker-compose --profile app up'
-      "
-    profiles:
-      - init
-
-  # ============= APP PROFILE (streamlit dashboard) =============
-
   dashboard:
     image: motor-health-lab
     build:
-      context: /Users/user/dbt
+      context: .
       dockerfile: Dockerfile
-    container_name: motor-health-dashboard
-    working_dir: /workspace
+    container_name: motor-health-app
     ports:
       - "8501:8501"
     volumes:
       - motor-health-data:/workspace/data
       - motor-health-db:/workspace
-    command: >
-      bash -c "
-        streamlit run app/streamlit_app.py --client.showErrorDetails=false
-      "
     environment:
       STREAMLIT_SERVER_HEADLESS: "true"
       STREAMLIT_SERVER_PORT: 8501
-      STREAMLIT_LOGGER_LEVEL: "error"
-    profiles:
-      - app
+    command: streamlit run app/streamlit_app.py
