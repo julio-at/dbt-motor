@@ -1,0 +1,28 @@
+rule_id,parameter,value,unit,applies_to,version,effective_from,rationale
+VIBE_G2_RIGID_AB,vibration_severity_ab_threshold,1.4,mm/s,group_2_rigid,1.0,2026-01-01,ISO 20816-3 Group 2 Rigid AB threshold
+VIBE_G2_RIGID_BC,vibration_severity_bc_threshold,2.8,mm/s,group_2_rigid,1.0,2026-01-01,ISO 20816-3 Group 2 Rigid BC (ALERT)
+VIBE_G2_RIGID_CD,vibration_severity_cd_threshold,4.5,mm/s,group_2_rigid,1.0,2026-01-01,ISO 20816-3 Group 2 Rigid CD (DANGER)
+VIBE_G2_FLEX_AB,vibration_severity_ab_threshold,2.3,mm/s,group_2_flexible,1.0,2026-01-01,ISO 20816-3 Group 2 Flexible AB threshold
+VIBE_G2_FLEX_BC,vibration_severity_bc_threshold,4.5,mm/s,group_2_flexible,1.0,2026-01-01,ISO 20816-3 Group 2 Flexible BC (ALERT)
+VIBE_G2_FLEX_CD,vibration_severity_cd_threshold,7.1,mm/s,group_2_flexible,1.0,2026-01-01,ISO 20816-3 Group 2 Flexible CD (DANGER)
+VIBE_G1_RIGID_AB,vibration_severity_ab_threshold,2.3,mm/s,group_1_rigid,1.0,2026-01-01,ISO 20816-3 Group 1 Rigid AB threshold
+VIBE_G1_RIGID_BC,vibration_severity_bc_threshold,4.5,mm/s,group_1_rigid,1.0,2026-01-01,ISO 20816-3 Group 1 Rigid BC (ALERT)
+VIBE_G1_RIGID_CD,vibration_severity_cd_threshold,7.1,mm/s,group_1_rigid,1.0,2026-01-01,ISO 20816-3 Group 1 Rigid CD (DANGER)
+VIBE_RELATIVE_WATCH,vibration_relative_watch_factor,2.0,,all,1.0,2026-01-01,Relative threshold: p95 > 2.0x baseline
+VIBE_RELATIVE_ALERT,vibration_relative_alert_factor,3.0,,all,1.0,2026-01-01,Relative threshold: p95 > 3.0x baseline
+TEMP_ABSOLUTE_WATCH,temperature_absolute_watch,80,°C,all,1.0,2026-01-01,Absolute temperature WATCH level
+TEMP_ABSOLUTE_ALERT,temperature_absolute_alert,90,°C,all,1.0,2026-01-01,Absolute temperature ALERT level
+TEMP_ABSOLUTE_DANGER,temperature_absolute_danger,100,°C,all,1.0,2026-01-01,Absolute temperature DANGER level
+TEMP_PEER_WATCH,temperature_peer_watch,10,°C,all,1.0,2026-01-01,Peer comparison: WATCH if > median + 10°C
+TEMP_PEER_ALERT,temperature_peer_alert,15,°C,all,1.0,2026-01-01,Peer comparison: ALERT if > median + 15°C
+BEARING_EARLY_WATCH,bearing_early_multiplier,3.0,,all,1.0,2026-01-01,BPFO/BPFI energy > 3x baseline = WATCH
+BEARING_DEVELOPED_ALERT,bearing_developed_multiplier,6.0,,all,1.0,2026-01-01,BPFO/BPFI energy > 6x baseline = ALERT
+BEARING_LATE_DANGER,bearing_late_multiplier,3.0,,all,1.0,2026-01-01,Noise floor > 3x baseline = DANGER
+OVERLOAD_ALERT_PCT,current_overload_alert_pct,100,%,all,1.0,2026-01-01,Current > 100% rated = ALERT
+OVERLOAD_DANGER_PCT,current_overload_danger_pct,115,%,all,1.0,2026-01-01,Current > 115% rated = DANGER
+VOLTAGE_UNBALANCE_WATCH,voltage_unbalance_watch_pct,1,%,all,1.0,2026-01-01,Voltage unbalance > 1% = WATCH
+VOLTAGE_UNBALANCE_ALERT,voltage_unbalance_alert_pct,2,%,all,1.0,2026-01-01,Voltage unbalance > 2% = ALERT
+VOLTAGE_UNBALANCE_DANGER,voltage_unbalance_danger_pct,5,%,all,1.0,2026-01-01,Voltage unbalance > 5% = DANGER
+RELUBE_DUE_PCT,relube_consumed_pct,90,%,all,1.0,2026-01-01,Grease life consumed >= 90% = maintenance flag
+FORECAST_WATCH_DAYS,forecast_zone_c_watch,30,days,all,1.0,2026-01-01,Forecast to Zone C < 30 days = WATCH
+FORECAST_ALERT_DAYS,forecast_zone_c_alert,14,days,all,1.0,2026-01-01,Forecast to Zone C < 14 days = ALERT

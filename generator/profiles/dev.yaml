@@ -1,0 +1,48 @@
+# dev profile: small, fast, for iteration
+name: dev
+description: "12 assets, 21 days, 1 frame/10s, every 60 min spectra"
+
+duration_days: 21
+n_assets: 12
+frame_interval_ms: 10000      # 10 seconds
+spectrum_interval_min: 60     # every hour
+
+# Plant layout
+floors: 2
+tandems_per_floor: 3
+order_per_tandem: 4
+
+# Conveyor motors (group 2, rigid, 4-pole, 60 Hz nominal)
+n_conveyor_motors: 10
+conveyor_motor_defaults:
+  asset_type: CONVEYOR_MOTOR
+  iso_group: 2
+  foundation: RIGID
+  poles: 4
+  nominal_output_hz: 60
+  rated_kw: 5.5
+  rated_current_a: 15
+
+# Mill drives (group 1, rigid, slower)
+n_mill_drives: 2
+mill_drive_defaults:
+  asset_type: MILL_DRIVE
+  iso_group: 1
+  foundation: RIGID
+  poles: 6
+  nominal_output_hz: 50
+  rated_kw: 22
+  rated_current_a: 50
+
+# Fault scenarios (subset for dev)
+scenarios:
+  - name: UNBALANCE_GROWTH
+    n_assets: 1
+    magnitude: moderate
+  - name: BEARING_OUTER_RACE
+    n_assets: 1
+    magnitude: slow
+  - name: CONTROL_HEALTHY
+    n_assets: 8
+
+seed: 42

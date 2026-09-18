@@ -1,0 +1,9 @@
+motor_health_lab:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '.duckdb'
+      schema: raw
+      threads: 4
+      timeout_seconds: 30

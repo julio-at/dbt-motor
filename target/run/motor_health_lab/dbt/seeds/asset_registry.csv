@@ -1,0 +1,11 @@
+
+    
+    
+    truncate table "motor_health_lab"."raw_seeds"."asset_registry";
+    -- dbt seed --
+    
+          COPY "motor_health_lab"."raw_seeds"."asset_registry" FROM '/workspace/dbt/seeds/asset_registry.csv' (FORMAT CSV, HEADER TRUE, DELIMITER ',')
+        
+
+;
+  

@@ -1,0 +1,38 @@
+name: 'motor_health_lab'
+version: '1.0.0'
+config-version: 2
+
+profile: 'motor_health_lab'
+
+model-paths: ["dbt/models"]
+analysis-paths: ["dbt/analyses"]
+test-paths: ["dbt/tests"]
+seed-paths: ["dbt/seeds"]
+macro-paths: ["dbt/macros"]
+snapshot-paths: ["dbt/snapshots"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  motor_health_lab:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
+    eval:
+      +materialized: view
+      +schema: eval
+
+seeds:
+  motor_health_lab:
+    +schema: seeds
+
+vars:
+  rules_version: "1.0.0"

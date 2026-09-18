@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_frames
+    description: Staging layer - vibration frames with cleaned names and parsed coordinates
+    columns:
+      - name: frame_id
+        description: Unique frame identifier
+
+  - name: stg_drive_telemetry
+    description: Staging layer - drive telemetry with validated ranges
+
+  - name: stg_spectra
+    description: Staging layer - spectra with validated axes
+
+  - name: int_frames_enriched
+    description: Intermediate layer - frames enriched with drive data, physics calculations, and DQ flags
+    columns:
+      - name: frame_id
+        description: Unique frame identifier
+      - name: f_1x_hz
+        description: Shaft speed (1x synchronous frequency)
+      - name: x_v_rms_mm_s
+        description: X-axis velocity RMS (mm/s)
+      - name: y_v_rms_mm_s
+        description: Y-axis velocity RMS (mm/s)
+      - name: z_v_rms_mm_s
+        description: Z-axis velocity RMS (mm/s)
+
+  - name: int_rollup_1m
+    description: Intermediate layer - 1-minute rollups with percentiles, aggregates
+    columns:
+      - name: minute_start_ns
+        description: Minute boundary (UTC)

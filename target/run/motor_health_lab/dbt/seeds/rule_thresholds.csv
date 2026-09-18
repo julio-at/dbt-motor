@@ -1,0 +1,11 @@
+
+    
+    
+    truncate table "motor_health_lab"."raw_seeds"."rule_thresholds";
+    -- dbt seed --
+    
+          COPY "motor_health_lab"."raw_seeds"."rule_thresholds" FROM '/workspace/dbt/seeds/rule_thresholds.csv' (FORMAT CSV, HEADER TRUE, DELIMITER ',')
+        
+
+;
+  

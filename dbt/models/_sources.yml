@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw ingested data from generator
+    database: null  # DuckDB uses default
+    schema: raw
+    tables:
+      - name: vibration_frames
+        description: Raw vibration frames (every 500ms)
+        columns:
+          - name: timestamp
+            description: Timestamp (ISO-8601)
+            tests:
+              - not_null
+          - name: device_id
+            description: Sensor ID
+            tests:
+              - not_null
+
+      - name: drive_telemetry
+        description: VFD telemetry (every 10s)
+        columns:
+          - name: timestamp
+            description: Timestamp
+            tests:
+              - not_null
+          - name: drive_id
+            description: Drive ID
+            tests:
+              - not_null
+
+      - name: spectra
+        description: FFT waveform snapshots
+        columns:
+          - name: timestamp
+            description: Snapshot timestamp
+            tests:
+              - not_null
+
+      - name: truth_labels
+        description: Ground truth fault labels for evaluation
+        columns:
+          - name: label_id
+            description: Label ID
+            tests:
+              - unique
+              - not_null

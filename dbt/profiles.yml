@@ -1,0 +1,9 @@
+motor_health_lab:
+  outputs:
+    dev:
+      type: duckdb
+      path: motor_health_lab.duckdb
+      threads: 4
+      database: motor_health_lab
+      schema: raw
+  target: dev

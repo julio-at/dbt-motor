@@ -1,0 +1,11 @@
+[client]
+showErrorDetails = false
+
+[logger]
+level = "error"
+
+[telemetry]
+enabled = false
+
+[browser]
+gatherUsageStats = false
